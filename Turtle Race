@@ -1,0 +1,135 @@
+import turtle as t, random as r, easygui as easy
+wins = [0,0,0,0,0]
+win = t.Screen()
+win.setup(440,235)
+
+#gives racers their defining colours
+def colour_racers(people):
+    colour = ["black","purple","yellow","blue","green","red","grey"]
+    current_colour = 0
+    for racers in people:
+        racers.color(colour[current_colour])
+        current_colour += 1
+#keeps track of individual wins
+def win_counter(racers, winner):
+    wins[racers.index(winner)] += 1
+    winner.penup()
+    winner.forward(10)
+    winner.color("black")
+    winner.write(f"{wins[racers.index(winner)]} win(s)")
+    
+#racers in start position
+def start_pos(people):
+    for racers in people:
+        racers.penup()
+    people[0].goto(-100,40)
+    people[1].goto(-100,20)
+    people[2].goto(-100,0)
+    people[3].goto(-100,-20)
+    people[4].goto(-100,-40)
+    people[5].goto(100,-60)
+    people[5].left(90)
+        
+#makes dividers between racers
+def make_dividers(people):
+    number = 30
+    for x in range(4):
+        people[6].goto(-100, number)
+        while people[6].xcor() < 100:
+            people[6].pendown()
+            people[6].forward(10)
+            people[6].penup()
+            people[6].forward(10)
+        number -= 20
+    people[6].hideturtle()
+    
+# makes finish line
+def make_finish_line(people):
+    for racers in people:
+        racers.pendown()
+    people[5].forward(120)
+    people[5].penup()
+    people[5].forward(10)
+    people[5].write("Finish")
+    people[5].hideturtle()
+
+#win message
+def win_msg(Turtle,Koopa,Verne,Donatello,Crush):
+    if Turtle.xcor() >= 100:
+        Turtle.goto(-100,-80)
+        Turtle.write("Turtle has won the race!")
+    if Koopa.xcor() >= 100:
+        Koopa.goto(-100,-80)
+        Koopa.write("Koopa Troopa has won the race!")
+    if Verne.xcor() >= 100:
+        Verne.goto(-100,-80)
+        Verne.write("Verne has won the race!")
+    if Donatello.xcor() >= 100:
+        Donatello.goto(-100,-80)
+        Donatello.write("Donatello has won the race!")
+    if Crush.xcor() >= 100:
+        Crush.goto(-100,-80)
+        Crush.write("Crush has won the race!")
+        
+#setsup race
+def setup(people):        
+    start_pos(people)
+    make_dividers(people)  
+    make_finish_line(people)
+    
+#makes the race happen
+def race(speedsters):
+    Winner = False
+    while Winner == False:
+        for racer in speedsters:
+            speed = r.randint(5,30)
+            racer.forward(speed)
+            if racer.xcor() >= 100:
+                win_counter(speedsters,racer)
+                racer.hideturtle()
+                Winner = True
+                break
+        
+#setsup race, races then restarts if agreed to
+def full_race():
+    #all code commented out here because cannot pull from local files unlocally on a different computer
+    
+    #win.bgpic(f"C:/Users/knw287/Downloads/crowd (1) (1).gif")
+    #win.register_shape(f"C:/Users/knw287/Downloads/download (1).gif")
+    #win.register_shape(f"C:/Users/knw287/Downloads/koop (1).gif")
+    #win.register_shape(f"C:/Users/knw287/Downloads/turt (1).gif")
+    #win.register_shape(f"C:/Users/knw287/Downloads/ninjaturt (1).gif")
+    #win.register_shape(f"C:/Users/knw287/Downloads/chillturtle (1).gif")
+    Turtle = t.Turtle()
+    #Turtle.shape(f"C:/Users/knw287/Downloads/download (1).gif")
+    #Turtle.shapesize(1,1,1)
+    Koopa = t.Turtle()
+    #Koopa.shape(f"C:/Users/knw287/Downloads/koop (1).gif")
+    #Koopa.shapesize(1,1,1)
+    Verne = t.Turtle()
+    #Verne.shape(f"C:/Users/knw287/Downloads/turt (1).gif")
+    #Verne.shapesize(1,1,1)
+    Donatello = t.Turtle()
+    #Donatello.shape(f"C:/Users/knw287/Downloads/ninjaturt (1).gif")
+    #Donatello.shapesize(1,1,1)
+    Crush = t.Turtle()
+    #Crush.shape(f"C:/Users/knw287/Downloads/chillturtle (1).gif")
+    #Crush.shapesize(1,1,1)
+    Line = t.Turtle()
+    Divider = t.Turtle()
+
+    while True:
+        t.Screen().reset()
+    
+        speedsters = [Turtle,Koopa,Verne,Donatello,Crush]
+        people = [Turtle,Koopa,Verne,Donatello,Crush,Line,Divider]
+        colour_racers(people)
+        
+        setup(people)
+        race(speedsters)
+        win_msg(Turtle,Koopa,Verne,Donatello,Crush)
+        
+        #asks for a rematch
+        Answer = easy.choicebox("Do you want to watch a rematch?", "Rerace?",("Yes","No"))
+        if Answer == "No":
+            break
