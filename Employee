@@ -1,0 +1,52 @@
+#################################################
+#employee dictionary
+#Kruiz Wasylenchuk
+#Date
+#Task: Complete functions with the provided info
+#run entirely from shell
+#################################################
+import easygui as easy
+
+quests = "What is their name?", "What is their job?", "What was their start year?", "Where do they work?"
+msg = "Input employee data."
+all_employees = [{"name":"Slater","job":"teacher","start_date": 2018,"location":"CCHS"}]
+
+#adds a person to all employees
+def add_person():
+    title = (f"Employee #{len(all_employees) + 1}")
+    Answers = easy.multenterbox(msg,title,quests)
+    #user didnt put a numerical value as start year
+    while Answers[2].isdigit() == False:
+        Answers[2] = easy.enterbox("Please input a numerical value for the start year.", title)
+    all_employees.append({"name":Answers[0],"job":Answers[1],"start_date":Answers[2],"location":Answers[3]})
+    
+#prints name of all employees
+def print_employees():
+    #name line break name
+    employees = ""
+    for x in range(len(all_employees)):
+        holder = all_employees[x]["name"]
+        employees += holder
+        employees += "\n"
+    easy.msgbox(employees)
+        
+#prints all names with where they work
+def print_job_location_pairs():
+    pairs = "A(n) "
+    for x in range(len(all_employees)):
+        pair = all_employees[x]["job"]
+        paired = all_employees[x]["location"]
+        pairs += pair
+        pairs += " works at "
+        pairs += paired
+        pairs += "\n"
+    easy.msgbox(pairs)
+        
+#says if eligible for a raise
+def print_possible_raise():
+    raised = ""
+    for x in range(len(all_employees)):
+        date = int([x]["start_date"])
+        if date <= 2020:
+            raised += f"{x['name']} works as a(n) {x['job']}, they started in {x['start_date']}, they work at {x['location']}. This valuable employee is eligible for a raise. \n"
+            easy.msgbox(raised)
