@@ -1,0 +1,113 @@
+######################
+#temperature conversions, averaging, and min/max calculator
+#C. Slater - Assignment
+#March 1, 2024
+#
+#take 7 temp readings from the user (in Kelvin, Celcius or Farnheit) and report back the average for the week and the min and max values for the week in all temperature scales (C, F, and K,
+######################
+
+#average temperature of the week
+def ATemp(tempOWeek):
+    b = 0
+    for x in range(len(tempOWeek)):
+        b = b + tempOWeek[x]
+    return (float(b)/len(tempOWeek))
+
+#converts fahrenheit to kelvin
+def ConFahrenKelvin(a):
+    return float((a) - (32)) * (5/9) + 273.15
+
+#converts celcius to fahrenheit
+def ConCelciusFahren(a):
+    return float(a * (9/5) + 32)
+
+#converts fahrenheit to celcius
+def ConFahrenCelcius(a):
+    return float((5/9) * (a - 32))
+
+#converts kelvin to celcius
+def ConKelvinCelcius(a):
+    return float(a - 273.15)
+
+#start of program
+print("Welcome to the weekly minimum, maximum, and average temperature calculator!")
+
+#what kind of measurement
+Temp = int(input("What are you measuring the temperature with? Type \"1\" for Celcius, \"2\" for Fahrenheit, or \"3\" for Kelvin."))
+
+#list of days in a week
+DayOWeek = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
+
+#list of temps in the week
+tempOWeek = [0,0,0,0,0,0,0]
+
+#asks for each days temperature
+for x in range(len(tempOWeek)):
+    tempOWeek[x] = float(input(f"What was the temperature on {DayOWeek[x]}?"))
+    
+#Restates the temp of each day of the week before saying the min/max/average
+for x in range(len(tempOWeek)):
+    print(f"The temperature on {DayOWeek[x]} was {tempOWeek[x]} degrees.")
+    
+#Sorts the min and max values of the week
+tempOWeek.sort()
+
+#if they chose celcius
+if Temp == 1:
+    
+    #Gathers average temp of inputs in celcius, then converts to farenheit and kelvin
+    ACelcius = ATemp(tempOWeek)
+    AFahrenheit = ConCelciusFahren(ACelcius)
+    AKelvin = ConFahrenKelvin(AFahrenheit)
+     
+    #Gathers minimum temp of inputs in celcius, then converts to farenheit and kelvin
+    MinC = tempOWeek[0] 
+    MinF = ConCelciusFahren(MinC)
+    MinK = ConFahrenKelvin(MinF)
+
+    ##Gathers maximum temp of inputs in celcius, then converts to farenheit and kelvin
+    MaxC = tempOWeek[6] 
+    MaxF = ConCelciusFahren(MaxC)
+    MaxK = ConFahrenKelvin(MaxF)
+    
+#if they chose fahrenheit
+if Temp == 2:
+    
+    #Gathers average temp of inputs in farhenheit, then converts to celcius and kelvin
+    AFahrenheit = ATemp(tempOWeek)
+    ACelcius = ConFahrenCelcius(AFahrenheit)
+    AKelvin = ConFahrenKelvin(AFahrenheit)
+    
+    #Gathers minimum temp of inputs in farhenheit, then converts to celcius and kelvin
+    MinF = tempOWeek[0] 
+    MinC = ConFahrenCelcius(MinF)
+    MinK = ConFahrenKelvin(MinF)
+
+    ##Gathers maximum temp of inputs in celcius, then converts to fahrenheit and kelvin
+    MaxF = tempOWeek[6] 
+    MaxC = ConFahrenCelcius(MaxF)
+    MaxK = ConFahrenKelvin(MaxF)
+    
+#if they chose kelvin
+if Temp == 3:
+    
+    #Gathers average temp of inputs in farhenheit, then converts to celcius and kelvin
+    AKelvin = ATemp(tempOWeek)
+    ACelcius = ConKelvinCelcius(AKelvin)
+    AFahrenheit = ConCelciusFahren(ACelcius)
+       
+    #Gathers minimum temp of inputs in farhenheit, then converts to celcius and kelvin
+    MinK = tempOWeek[0] 
+    MinC = ConKelvinCelcius(AKelvin)
+    MinF = ConCelciusFahren(MinC)
+
+    ##Gathers maximum temp of inputs in celcius, then converts to fahrenheit and kelvin
+    MaxK = tempOWeek[6] 
+    MaxC = ConKelvinCelcius(MaxK)
+    MaxF = ConCelciusFahren(MaxC)
+    
+#now tells the user the min/max/average of the week
+print("The average temperature for the week was ", round(ACelcius) , " degrees in Celcius, ", round(AFahrenheit) , " degrees in Fahrenheit, and ", round(AKelvin) , " degrees in Kelvin.")
+print("The minimum temperature for the week was ", round(MinC) , " degrees in Celcius, ", round(MinF) , " degrees in Fahrenheit, and ", round(MinK) , " degrees in Kelvin.")
+print("The maximum temperature for the week was ", round(MaxC) , " degrees in Celcius, ", round(MaxF) , " degrees in Fahrenheit, and ", round(MaxK) , " degrees in Kelvin.")
+#end of program :)
