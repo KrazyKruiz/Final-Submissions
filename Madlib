@@ -1,0 +1,65 @@
+#im not writing out all the beggining details becuase all my code crashed when i was finsihed :)
+
+import easygui as easy, random
+
+#All definitions pick a random word of specified type
+
+def random_word(input_list):
+    length_list = len(input_list)
+    value = random.randint(0,(length_list-1))
+    rand_word = input_list[value]
+    return rand_word
+
+while True:
+    msg = "Input the indicated words to generate a fun story!"
+    title = "Story Generator"
+    
+    #Asks for specified word type
+    WordsN = ["Noun #1","Noun #2","Noun #3","Noun #4"]
+    AnswersN = []
+    AnswersN = easy.multenterbox(msg,title,WordsN)
+
+    WordsV = ["Verb #1","Verb #2","Verb #3","Verb #4"]
+    AnswersV = []
+    AnswersV = easy.multenterbox(msg,title,WordsV)
+    
+    WordsVing = ["Verb ending with 'ing' #1","Verb ending with 'ing' #2","Verb ending with 'ing' #3","Verb ending with 'ing' #4"]
+    AnswersVing = []
+    AnswersVing = easy.multenterbox(msg,title,WordsVing)
+ 
+    WordsAdj = ["Adjective #1","Adjective #2","Adjective #3","Adjective #4"]
+    AnswersAdj = []
+    AnswersAdj = easy.multenterbox(msg,title,WordsAdj)
+
+    WordsAdv = ["Adverb #1","Adverb #2","Adverb #3","Adverb #4"]
+    AnswersAdv = []
+    AnswersAdv = easy.multenterbox(msg,title,WordsAdv)
+   
+    WordsPtv = ["Past tense verb #1","Past tense verb #2","Past tense verb #3","Past tense verb #4"]
+    AnswersPtv = []
+    AnswersPtv = easy.multenterbox(msg,title,WordsPtv)
+         
+    WordsPl = ["Plural noun #1","Plural noun #2","Plural noun #3","Plural noun #4"]
+    AnswersPl = []
+    AnswersPl = easy.multenterbox(msg,title,WordsPl)
+        
+    #picks random story to then fill out randomly
+    rng = random.randint(1,3)
+
+    if rng == 1:
+        easy.msgbox(f"Today I went to the zoo. I saw a {random_word(AnswersAdj)} {random_word(AnswersN)} jumping up and down in its tree. He {random_word(AnswersPtv)} {random_word(AnswersAdv)} through the large tunnel that led to its {random_word(AnswersAdj)} {random_word(AnswersN)}. I got some peanuts and passed them through the cage to a gigantic gray {random_word(AnswersN)} towering above my head. Feeding that animal made me hungry. I went to get a {random_word(AnswersAdj)} scoop of ice cream. It filled my stomach. Afterwards I had to {random_word(AnswersV)} {random_word(AnswersAdv)} to catch our bus. When I got home I {random_word(AnswersPtv)} my mom for a {random_word(AnswersAdj)} day at the zoo.")
+
+    if rng == 2:
+        easy.msgbox(f"The day I saw the Monkey King {random_word(AnswersV)} was one of the most interesting days of the year. After he did that, the king played chess on his brother's {random_word(AnswersN)} and then combed his {random_word(AnswersAdj)} hair with a comb made out of old fish bones. Later that same day, I saw the Monkey King dance {random_word(AnswersAdv)} in front of an audience of kangaroos and wombats.")
+
+    if rng == 3:
+        easy.msgbox(f"When I go to the arcade with my {random_word(AnswersPl)} there are lots of games to play. I spend lots of time there with my friends. In the game X-Men you can be different {random_word(AnswersPl)}. The point of the game is to {random_word(AnswersV)} every robot. You also need to save people. Then you can go to the next level. In the game Star Wars you are Luke Skywalker and you try to destroy every {random_word(AnswersN)}. In a car racing/motorcycle racing game you need to beat every computerized vehicle that you are {random_word(AnswersVing)} against. There are a whole lot of other cool games. When you play some games you win {random_word(AnswersPl)} for certain scores. Once you're done you can cash in your tickets to get a big {random_word(AnswersN)}. You can save your {random_word(AnswersPl)} for another time. When I went to this arcade I didn't believe how much fun it would be. So far I have had a lot of fun every time I've been to this great arcade!")
+    
+    #continue?
+    msg ="Do you want to do more?"
+    title = "Continue?"
+    choices = ["Yes","No"]
+    choice = easy.choicebox(msg, title, choices)
+    if choice == "No":
+        exit()
+#End :)
