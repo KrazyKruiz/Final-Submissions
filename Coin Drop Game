@@ -1,0 +1,256 @@
+##############
+#Turtle - Collect It Game
+#Name Kruiz Wasylenchuk
+#Date April 30, 2024
+#
+#Task: To create a simple game where the player controls a turtle that can move left and right while trying to collect falling items.
+##############
+# may have to change enemy speed as its true speed is dependant on browser speed
+#####Setup#####
+#Use this section to organize global data
+
+#Import Libraries
+import turtle as t, random as r
+
+#title screen
+screen = t.Screen() 
+hideturtle()
+title = t.Turtle()
+game_start = False
+
+#function to start game
+def start_game():
+    global game_start
+    game_start = True
+    title.clear()
+    
+#function for intro screen   
+def start_screen():
+    title.penup()
+    title.speed(0)
+    title.hideturtle()
+    title.goto(-200,100)
+    title.write("Falling Dots Game",font=('calibri',40,'normal'))
+    title.goto(-195,30)
+    title.write("Use arrow keys to move left and right",font=('calibri',19,'normal'))
+    title.goto(-130,0)
+    title.write("to collect the black dots!",font=('calibri',19,'normal'))
+    title.goto(-90,-30)
+    title.write("Press space to start",font=('calibri',15,'normal'))
+
+#calls upon function before defining other things to avoid screen cluter
+start_screen()
+screen.listen()
+screen.onkey(start_game, "Space")
+while game_start == False:
+    title.forward(1)
+    
+#Global Variable
+scores = 0
+life = 3
+game = True
+retry = True
+game_num = 0
+game_start = False
+
+#creates the turtles
+enemy1 = t.Turtle()
+enemy2 = t.Turtle()
+enemy3 = t.Turtle()
+enemy4 = t.Turtle()
+enemy5 = t.Turtle() #this one is poisonous
+enemy6 = t.Turtle()
+
+score = t.Turtle()
+score.penup()
+score.hideturtle()
+player = t.Turtle()
+player.speed(0)
+player.shape("turtle") 
+hscores = t.Turtle()
+hscores.hideturtle()
+hscores.penup()
+#Lists
+enemies = [enemy1,enemy2,enemy3,enemy4,enemy5,enemy6]
+
+#####Functions#####
+
+##Core Game Functions##
+
+#Create Score
+#Create the score field on the top of the screen
+def setup_score():
+    global scores
+    score.clear()
+    score.goto(-195,180)
+    score.write("000", font=('calibri',20,'normal'))
+
+#Create Player
+#Create and draw player onto the screen in starting position
+def create_player():
+    player.hideturtle()
+    player.penup() 
+    player.setx(0) 
+    player.sety(-180) 
+    player.showturtle()
+
+#Check Player Screen Bounds (Horizontal)
+def check_horizontal_bounds():
+    if player.xcor() <= -160:
+        player.goto(-160,-180)
+    elif player.xcor() >= 160:
+        player.goto(160,-180)
+        
+#Move Player Left 
+#Move player left in response to arrow key 
+def move_left(): 
+    player.back(10) 
+    check_horizontal_bounds()
+  
+
+#Move Player Right 
+#Move player right in response to arrow key 
+def move_right(): 
+    player.forward(10) 
+    check_horizontal_bounds()
+    
+#Check to see if the player is within the vertical bounds, if not set the player to the bound
+
+#Create Collectable
+#Use a for loop to create and store your collectables into a list
+def create_collectables(enemies):
+    enemies[4].color("purple")
+    for enemy in enemies:
+        enemy.speed(0)
+        enemy.hideturtle()
+        enemy.penup()
+        enemy.shape("circle")
+        xstart = r.randint(-150,150)
+        ystart = r.randint(250,800)
+        enemy.goto(xstart,ystart)
+        enemy.showturtle()
+        if game_num == 1:
+            enemy.right(90)
+        enemy.speed(3)
+
+#resets enemies to the top of the screen
+def reset_enemies(enemy):
+    enemy.speed(0)
+    xstart = r.randint(-150,150)
+    ystart = r.randint(250,800)
+    enemy.hideturtle()
+    enemy.goto(xstart,ystart)
+    enemy.showturtle()
+    enemy.speed(3)
+
+#Check Player Catch Collectable
+#Pass in a collectable item from a list and determine if it is in contact/proximity with the player
+#mega function that handles most of the  game
+def check_collectable(enemies,player):
+    for enemy in enemies:
+        if enemy.ycor() <= -160:
+            if int(enemy.xcor()) - 25 <= player.xcor() <= int(enemy.xcor()) + 25:
+                reset_enemies(enemy)
+                if enemy == enemies[4]:
+                    global scores
+                    scores -= 600
+                update_score()
+            elif enemy.ycor() <= -180:
+                if enemy == enemies[4]:
+                    reset_enemies(enemy)
+                else:
+                    print("Ow!")
+                    reset_enemies(enemy)
+                    update_lives()
+                    if life <= 0:
+                        global game
+                        game = False
+                        break
+#Move Collectable 
+#Go through your list of collectables and move each item
+def move_collectable(enemies):
+    for enemy in enemies:
+        enemy.forward(10)
+
+#Update Score
+#If contact between collectable and player is made, update global score
+def update_score():
+    score.clear()
+    score.goto(-195,180)
+    global scores
+    scores += 100
+    score.write(scores, font=('calibri',20,'normal'))
+    
+#high score after each game
+def high_score(game_num):
+    global hscore
+    global scores
+    if game_num == 1:
+        hscore = 0
+    if scores > hscore:
+        hscores.clear()
+        hscores.goto(120,180)
+        hscores.write("High Score:", font=('calibri',12,'normal'))
+        hscores.goto(120,160)
+        hscores.write(scores, font=('calibri',12,'normal'))
+        hscore = scores
+    scores = 0
+
+##Extendable Functions##
+#Life Tracker
+def update_lives():
+    global life
+    life -= 1
+    if life == 0:
+        game = False
+        print("Game Over!")
+        return life
+
+#Game Over Screen
+def retry_yes():
+    global retry
+    retry = True
+    global game
+    game = True
+
+#retry functions are used for the restart game prompt
+def retry_no():
+    global retry
+    retry = False
+    global game
+    game = True
+    
+#asks to restart game    
+def game_over():
+    title.goto(-180,0)
+    title.write("Do you want to try again? press 'Y' for yes and 'N' for no.", font=('calibri',12,'normal'))
+    screen.onkey(retry_yes,"y")
+    screen.onkey(retry_no,"n")
+    screen.listen()
+
+#####Core Game Loop#####
+#Use this while loop to create your game loop, define logic and call above functions
+    
+while retry == True:
+    #####Setup Function Calls#####
+    game_num += 1
+    create_player()
+    create_collectables(enemies)
+    setup_score()
+    high_score(game_num)
+    for enemy in enemies:
+        enemy.speed(3)
+    screen.onkey(move_right , "Right") 
+    screen.onkey(move_left , "Left") 
+    screen.listen()
+    
+    #main game
+    while game == True:
+        move_collectable(enemies)
+        check_collectable(enemies,player)
+        
+    #when you game over
+    while game == False:    
+        game_over()
+        life = 3
+    title.clear()
