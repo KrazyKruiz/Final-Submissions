@@ -238,8 +238,6 @@ while retry == True:
     create_collectables(enemies)
     setup_score()
     high_score(game_num)
-    for enemy in enemies:
-        enemy.speed(3)
     screen.onkey(move_right , "Right") 
     screen.onkey(move_left , "Left") 
     screen.listen()
