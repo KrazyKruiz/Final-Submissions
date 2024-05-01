@@ -94,6 +94,7 @@ def create_player():
     player.showturtle()
 
 #Check Player Screen Bounds (Horizontal)
+#has screen rap
 def check_horizontal_bounds():
     if player.xcor() <= -160:
         player.goto(160,-180)
